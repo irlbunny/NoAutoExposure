@@ -9,6 +9,8 @@ namespace NoAutoExposure
     [Plugin(RuntimeOptions.DynamicInit)]
     public class Plugin
     {
+        internal const string CAPABILITYNAME = "No Auto-Exposure";
+
         private static readonly FieldAccessor<BloomPrePassBloomTextureEffectSO, PyramidBloomRendererSO.Pass>.Accessor _finalUpsamplePassAccessor
             = FieldAccessor<BloomPrePassBloomTextureEffectSO, PyramidBloomRendererSO.Pass>.GetAccessor("_finalUpsamplePass");
 
@@ -41,6 +43,8 @@ namespace NoAutoExposure
                         Log.Info($"Patched {textureEffect.name}.");
                     }
                 }
+
+                SongCore.Collections.RegisterCapability(CAPABILITYNAME);
             }
         }
 
@@ -55,6 +59,8 @@ namespace NoAutoExposure
                     _finalUpsamplePassAccessor(ref textureEffect) = finalUpsamplePass.Value;
                     Log.Info($"Unpatched {textureEffect.name}.");
                 }
+
+                SongCore.Collections.DeregisterizeCapability(CAPABILITYNAME);
             }
 
             FinalUpsamplePasses = null;

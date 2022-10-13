@@ -3,10 +3,11 @@
   "id": "NoAutoExposure",
   "name": "No Auto-Exposure",
   "author": "Kaitlyn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turns off the auto-exposure added in 1.24.0, no configuration. Just install this plugin, and enjoy!",
   "gameVersion": "1.24.0",
   "dependsOn": {
-    "BSIPA": "^4.2.0"
+    "BSIPA": "^4.2.2",
+    "SongCore": "^3.9.6"
   }
 }
