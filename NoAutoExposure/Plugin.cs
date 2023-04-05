@@ -1,7 +1,9 @@
 ﻿using IPA;
+using IPA.Config.Stores;
 using IPA.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using IPAConfig = IPA.Config.Config;
 using IPALogger = IPA.Logging.Logger;
 
 namespace NoAutoExposure
@@ -15,13 +17,15 @@ namespace NoAutoExposure
             = FieldAccessor<BloomPrePassBloomTextureEffectSO, PyramidBloomRendererSO.Pass>.GetAccessor("_finalUpsamplePass");
 
         internal static IPALogger Log { get; private set; }
+        internal static Config Conf { get; private set; }
 
         internal static Dictionary<BloomPrePassBloomTextureEffectSO, PyramidBloomRendererSO.Pass> FinalUpsamplePasses { get; private set; }
 
         [Init]
-        public Plugin(IPALogger logger)
+        public Plugin(IPALogger logger, IPAConfig conf)
         {
             Log = logger;
+            Conf = conf.Generated<Config>();
         }
 
         [OnEnable]
@@ -39,7 +43,7 @@ namespace NoAutoExposure
                     if (finalUpsamplePass == PyramidBloomRendererSO.Pass.UpsampleTentAndACESToneMappingGlobalIntensity)
                     {
                         FinalUpsamplePasses[textureEffect] = finalUpsamplePass;
-                        _finalUpsamplePassAccessor(ref textureEffect) = PyramidBloomRendererSO.Pass.UpsampleTentAndACESToneMapping;
+                        _finalUpsamplePassAccessor(ref textureEffect) = !Conf.DisableToneMapping ? PyramidBloomRendererSO.Pass.UpsampleTentAndACESToneMapping : PyramidBloomRendererSO.Pass.UpsampleTent;
                         Log.Info($"Patched {textureEffect.name}.");
                     }
                 }
